@@ -1,0 +1,368 @@
+WEBAPP Day01
+
+一、Ionic 简介
+1. WEBAPP = WEB（基本的前端技术） + APP（移动端应用程序）
+2. 移动端应用程序的开发技术：
+	2.1 Native 原生开发
+        a. Android：Java/Kotlin
+        b. iOS: Objective C/Swift
+        c. Others: 0.02%
+	2.2 WEB 应用：基本的前端技术，浏览器访问，m站
+	2.3 React Native：Facebook
+	2.4 Ionic 离子
+3. Ionic 官网
+	Build amazing apps in one codebase, for any platform, with the web.
+	一次编写，到处运行
+4. Ionic 使用的技术
+   a. HTML
+   b. CSS（SCSS）
+   c. JavaScript / TypeScript
+   d. Angular
+   e. Cordova
+5. 开源，免费：FOSS = Free OpenSource Software
+6. 样式风格贴近于原生应用
+7. 社区活跃
+8. CLI 强大
+9. 创建一个 Ionic 的 Hello World 程序
+10. 执行命令行命令：
+	10.1 命令的作用
+	10.2 命令的位置
+	10.3 命令的输出
+	10.4 命令的结果
+11. 基于 Node.js 安装 Ionic：npm i -g ionic
+12. 安装 Cordova：npm i -g cordova
+	官网：https://cordova.apache.org
+13. 无网络：解压缩 node_modules.zip
+    13.1 把 ionic 和 cordova 目录放到 node 的全局模块目录下
+	C:\Users\web-01\AppData\Roaming\npm\node_modules（其中 AppData 是隐藏目录）
+	  13.2 查看版本
+        a. ionic -v 3.19.1
+        b. cordova -v 8.0.0
+14. 在 Webstorm 中创建一个项目 ionic-1709N
+15. Github客户端
+    a. Android：octoDroid.apk
+    b. iOS:codePan
+16. 在项目 ionic-1709N 根目录 app 下执行 Ionic CLI 命令
+	  ionic start app blank
+	16.1 目录下，按 Shift + 鼠标右键 - 打开命令行
+	16.2 Webstorm: Alt + F12 打开命令行
+	16.3 命令的作用：使用 blank 空项目模板创建一个 ionic 的项目，名字为 app
+	16.4 创建完成后，Ctrl + C 终止后续操作
+	16.5 在 app 下执行命令：npm i，根据 package.json 配置文件自动下载项目（开发）依赖
+17. 无网络：解压缩 app-blank.zip 为 app 目录，放到项目目录下 ionic-1709N/app
+18. 运行 app 项目：
+    app 下执行命令: ionic serve -l
+19. ionic -v 提示错误：
+    'ionic' 不是内部或外部命令，也不是可运行的程序或批处理文件。
+    解决：解压缩 npm.zip，把 ionic 和 ionic.cmd 两个文件放到
+    C:\Users\web-01\AppData\Roaming\npm\ 目录下
+20. Ionic DevApp.apk 保证手机和电脑在同一个无线网下，看到项目在手机中的实际效果（准确的）
+21. 运行后，项目的改变会实时更新（不稳定，关闭之前的服务：Ctrl + C，再次启动 ionic serve -l）
+
+二、Ionic 基本组件
+22. button
+	22.1 基本按钮
+	22.2 外边框按钮
+	22.3 无边框按钮
+	22.4 圆角按钮
+	22.5 圆角块级按钮
+	22.6 非圆角块级按钮
+23. Ionic 创建页面
+	在 Ionic-1709N/app 下执行 CLI 命令
+	ionic g page button (类名：ButtonPage)
+24. Ionic 页面跳转
+	24.1 修改文件 src/app/app.module.ts
+        a. 引入新创建的页面文件
+            import {ButtonPage} from '../pages/button/button';
+        b. 在 declarations 数组中，添加 ButtonPage
+        c. 在 entryComponents 数组中，添加 ButtonPage
+	24.2 修改 pages/home/home.ts 文件
+        a. 引入 ButtonPage
+            import {ButtonPage} from '../button/button';
+        b. 在 HomePage 类中声明属性 buttonPage
+        c. 在 HomePage 类的构造器中初始化 buttonPage
+					this.buttonPage = ButtonPage;
+	24.3 修改 pages/home/home.html 文件
+        a. 添加一个按钮
+           <button ion-button>按钮示例</button>
+        b. 为 button 添加属性
+					 [navPush]="buttonPage"
+25. List 组件
+	25.1 创建新页面 list: ionic g page list
+	25.2 从 HomePage 点击按钮跳向 ListPage
+26. List
+	26.1 基本列表
+	26.2 按钮作为列表项
+	26.3 列表边距
+	26.4 无分隔线列表
+	26.5 列表分隔项
+	26.6 列表头部
+	26.7 图标列表项
+	26.7 头像作为列表项
+		a. https://iconfinder.com/
+		b. app/src/assets/avatars/default.png
+		c. <img src="assets/avatars/default.png"/>
+	26.8 滑动列表项
+
+练习：实现商品列表(京东首页搜索 “手机”)
+
+
+WEBAPP Day02
+
+1. 配置 node 命令
+    1.1 ionic serve -l
+    1.2 修改 package.json 文件
+        "scripts": {
+            ...,
+            "start": "ionic serve -l"
+        }
+    1.3 npm start
+    1.4 start 是一个默认名，只有 start 可以在执行时 npm start，其它的命令需要执行 npm run 命令名
+2. 列表项数据来自于服务器端
+    2.1 在控制器中定义数据数组 items
+    2.2 在列表里使用循环展示列表项
+        ... *ngFor="let item of items">{{item}}...
+    2.3 添加点击列表项事件
+        在页面中添加点击事件 (click)="selectItem(item)"
+        在控制器中定义方法: selectItem(item: string) {// ...}
+
+3. card
+    3.1 创建页面 card，点击 HomePage 跳转到 CardPage
+    3.2 基本卡片
+    3.3 列表内容卡片
+    3.4 图片内容卡片
+4. FAB
+    4.1 FAB = Floating Action Buttons 浮动操作按钮
+    4.2 创建页面 fab，点击 HomePage 跳转到 FabPage
+    4.3 基本 FAB
+    4.4 居中 FAB
+5. Gesture
+    5.1 Gesture 手势动作
+    5.2 创建页面 gesture，点击 HomePage 跳转到 GesturePage
+    5.3 tap 轻点
+    5.4 press 点按
+    5.5 pan 滑动
+    5.6 swipe 轻扫
+6. Grid
+    6.1 Grid 12 栅格系统
+    6.2 创建页面 grid，点击 HomePage 跳转到 GridPage
+    6.3 等分栅格
+    6.4 指定宽度
+    6.5 自动宽度
+    6.6 列偏移
+    6.7 垂直对齐
+7. Form
+    7.1 创建页面 form，点击 HomePage 跳转到 FormPage
+    7.2 文本输入框
+    7.3 密码输入框
+    7.4 复选框
+    7.5 单选按钮
+    7.6 日期选择
+    7.7 下拉列表
+    7.8 范围滑块
+    7.9 开关按钮
+
+8. Toast
+    8.1 Toast 吐司
+    8.2 创建页面 toast，点击 HomePage 跳转到 ToastPage
+    8.3 导入 ToastController
+    8.4 依赖注入 Constructor
+    8.5 定义 toast
+    8.6 呈现 present
+
+9. Alert
+    9.1 创建页面 toast，点击 HomePage 跳转到 ToastPage
+    9.2 导入 AlertController
+    9.3 依赖注入 Constructor
+    9.4 定义 alert
+    9.5 呈现 present
+
+10. 完成用户注册页面和登录页面（Email/password）
+    同时完成数据库、表的设计（db.user）
+WEBAPP Day03
+
+一、客户端，组件
+
+1. 用户注册页面和登录页面（Email/password）
+2. 在 HomePage 中添加用户登录表单
+    2.1 Email
+    2.2 Password
+    2.3 登录提交按钮
+
+3. 在 HomePage 中添加注册按钮
+
+4. 创建用户注册页面 SignUpPage
+    4.1 Email
+    4.2 Username
+    4.3 Password
+    4.4 Gender
+    4.5 Age
+    4.6 注册提交按钮
+
+5. HomePage 跳转到 SignUpPage
+
+6. 数据库、表的设计（db.user）
+
+7. Icon
+    7.1 创建页面 icon，HomePage 跳转到 IconPage
+    7.2 <ion-icon name="图表名"></ion-icon>
+    7.3 可以使用关于字体的任何样式
+    7.4 针对不用系统 <ion-icon ios="苹果图标名" md="安卓图标名"></ion-icon>、
+    7.5 属性绑定 [name]="name 的变量名"
+    7.6 http://www.iconfont.cn
+
+8. InfiniteScroll
+
+二、 搭建 Ionic 应用的服务器端
+
+9. 创建目录 server-demo
+10. 在 server-demo/ 下执行：npm init 生成 package.json
+11. 创建文件 server-demo/app.js
+12. Node.js 的模块
+    12.1 核心模块：http path fs global
+         直接引入 require 再使用
+    12.2 第三方模块：express mysql body-parser supervisor
+         下载安装，再引入，再使用
+    12.3 自定义模块
+         a. 文件模块
+         b. 目录模块
+13. 使用 express 创建一个简单的服务器端
+    13.1 server-demo/ 下执行 npm i -S express
+    13.2 编辑 app.js 文件，创建服务器
+    13.3 运行 app.js
+    13.4 浏览器访问服务器端
+
+14. 无网络：
+    14.1 解压缩 server-demo.zip
+    14.2 在 server-demo/ 创建文件 app.js
+    14.3 编辑 app.js 文件，创建服务器
+         const express = require('express');
+         let app = new express();
+         app.listen(3000);
+
+    14.4 运行 app.js
+         server-demo/ 执行 node app
+    14.5 浏览器访问服务器端
+         http://127.0.0.1:3000
+
+15. supervisor 可以实现服务器端热部署
+    15.1 执行 npm i -g supervisor
+    15.2 无网络：解压缩 supervisor.zip
+         a. supervisor 和 supervisor.cmd 文件放在
+            用户目录/AppData/Roming/npm/ 下
+         b. supervisor 目录放在
+            用户目录/AppData/Roming/npm/node_modules/ 下
+    15.3 关掉之前的服务，在 server-demo/ 下执行 supervisor app
+         再输入 rs
+
+16. EADDRINUSE:::3000 端口号占用问题
+    16.1 netstat -ano | findstr 端口号
+    16.2 taskkill /f /pid 进程 ID
+
+17. HTTP 请求的提交方式
+    17.1 GET (表单，默认) 不安全，字符串长度有限
+    17.2 POST (表单，method="post"，需要显式声明) 安全，信息大小不限
+    17.3 DELETE
+    17.4 PUT
+    17.5 ...
+
+18. 在服务器端 Express 获取请求信息
+    18.1 GET：req.query.key
+    18.2 POST: Express 需要配置 body-parser 中间件
+         a. 下载安装 body-parser 为项目的依赖，在 server-demo/ 执行 npm i -S body-parser
+         b. 在 server-demo/app.js，引入 body-parser，配置 body-parser
+         c.
+
+
+18. Ionic App 客户端，获取用户在表单填写的信息
+    18.1 在控制器中定义一个 user={xxx:'',...} 对象
+    18.2 在表单页面做数据双向绑定 [(ngModel)]="user.xxx" {{user.xxx}}
+    18.3 在控制器里获取用户填写的表单信息
+
+19. 在服务器端接收用户的注册请求：/signUp
+
+练习：完成用户注册请求的处理
+
+
+1. Ionic 的跨域(CORS Cross Origin Resources Share)问题
+   客户端 http://127.0.0.1:8100
+   服务器 http://127.0.0.1:3000
+2. Ionic 服务器代理方式结局
+3. 修改 app-demo/ionic.config.json 文件
+   "proxies": [
+        {
+          "path": "/signUp",
+          "proxyUrl": "http://127.0.0.1:3000/signUP"
+        }
+     ]
+   重启客户端
+
+4. 修改 server/demo/app.js 文件，添加 body-parser 中间件的配置项
+   app.use(bodyParser.json());
+   因为 Ionic 使用 HttpClient 提交请求的数据都是自动转为 JSON 格式
+
+5. 服务器返回 JSON 响应
+   res.send({"status":"ok"});
+
+6. 错误信息
+   HttpErrorResponse
+   error: Object
+   headers:...
+   ...
+   url: "http://localhost:8100/signUp"
+
+   三处需要注意的地方：
+   a. app-demo/ionic.config.json
+      proxy 设置正确
+      重启客户端
+   b. this.httpClient.post('/signUp',...
+   c. app.js 中，res.send({"status":"ok"});
+
+7. 服务器端处理用户注册请求
+   7.1 下载安装 mysql 第三方模块为项目依赖
+       server-demo/ 执行：npm i -S mysql
+   7.2 引入 mysql 模块
+   7.3 创建一个数据库连接池 pool
+       池化技术
+   7.4 定义 SQL 语句
+   7.5 执行 SQL 语句
+   7.6 判断执行结果
+
+8. 服务器端返回响应
+   8.1 注册成功：res.send({"status":"ok"});
+   8.2 注册失败：res.send({"status":"err"});
+
+9. 客户端接收响应，并做处理
+   9.1 status 是 exist，邮箱存在，不能注册
+       提示消息 alert
+   9.2 status 是 ok，页面跳转到 HomePage
+       // HomePage lazying loading
+       this.navCtrl = 'HomePage';
+   9.3 status 是 err，提示错误消息 toast
+
+
+练习：完成用户注册，用户登录
+
+
+10. node -v Node.js 的版本是 6
+   10.1 卸载 Node.js
+        开始-控制面板-程序-卸载-Node.js-卸载
+   10.2 FTP 下载 Day04/node-v8.9.4-x64.msi
+   10.3 安装 node-v8.9.4-x64.msi
+   10.4 FTP 下载 Day04/node_modules.zip
+   10.5 解压缩 node_modules.zip 替换 app-demo/node_modules
+
+11. Github 在 Webstorm 里的基本配置
+    11.1 安装 git 软件
+         https://git-scm.com
+    11.2 File - Settings 里，搜 git，点 Test 测试
+    11.3 File - Settings 里，搜 github，选 password，Test
+    11.4 在 Webstorm 中任意位置创建文件 .gitconfig
+         [user]
+             name = thu
+             email = mingfei.net@gmail.com
+    11.5 把 .gitconfig 放到用户目录下
+    11.6 提交项目前，创建文件 .gitignore，排除忽略的文件
+    11.6 提交项目前，创建文件 README.md，项目说明文件
+    11.7 把项目发布到 GitHub：VCS - Import into Version Control - Share Project on GitHub
+    11.8 代码更新后，快捷键 Ctrl + K，提交-推送 commit-push
